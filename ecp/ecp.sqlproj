@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>ecp</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{6e792ec4-e37f-4fc9-8fcb-bb78a87acaca}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath />
+    <RootNamespace>ecp</RootNamespace>
+    <AssemblyName>ecp</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Schema" />
+    <Folder Include="Scripts" />
+    <Folder Include="Security" />
+    <Folder Include="stg_ecp" />
+    <Folder Include="stg_ecp\Tables" />
+    <Folder Include="etl_util" />
+    <Folder Include="etl_audit" />
+    <Folder Include="etl_audit\Stored Procedures" />
+    <Folder Include="etl_audit\Tables" />
+    <Folder Include="etl_audit\Views" />
+    <Folder Include="etl" />
+    <Folder Include="dim" />
+    <Folder Include="dim\Tables" />
+    <Folder Include="etl_config" />
+    <Folder Include="etl_config\Stored Procedures" />
+    <Folder Include="etl_config\Tables" />
+    <Folder Include="stg_ecp\Stored Procedures" />
+    <Folder Include="fact" />
+    <Folder Include="fact\Tables" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schema\dim.sql" />
+    <Build Include="Schema\etl.sql" />
+    <Build Include="Schema\etl_audit.sql" />
+    <Build Include="Schema\etl_util.sql" />
+    <Build Include="Schema\fact.sql" />
+    <Build Include="Schema\stg_ecp.sql" />
+    <Build Include="etl_util\p_DeleteFromTablesInSchema.sql" />
+    <Build Include="etl_audit\Stored Procedures\p_InsertJobLog.sql" />
+    <Build Include="etl_audit\Stored Procedures\p_LogAndRaiseSqlError.sql" />
+    <Build Include="etl_audit\Stored Procedures\p_UpdateJobLog_EndProcedure.sql" />
+    <Build Include="etl_audit\Stored Procedures\p_UpdateJobLog_EndSection.sql" />
+    <Build Include="etl_audit\Tables\Error.sql" />
+    <Build Include="etl_audit\Tables\JobLog.sql" />
+    <Build Include="etl_audit\Views\v_Error.sql" />
+    <Build Include="etl_audit\Views\v_JogLog.sql" />
+    <Build Include="etl\p_insertDimCalendar.sql" />
+    <Build Include="Security\DataLoader.sql" />
+    <Build Include="stg_ecp\Tables\product_data.sql" />
+    <Build Include="dim\Tables\Calendar.sql" />
+    <Build Include="dim\Tables\Product.sql" />
+    <Build Include="dim\Tables\Time.sql" />
+    <Build Include="etl_config\Stored Procedures\p_InsertConfiguration.sql" />
+    <Build Include="etl_config\Tables\Configuration.sql" />
+    <Build Include="stg_ecp\Stored Procedures\p_InsertDimProduct.sql" />
+    <Build Include="stg_ecp\Stored Procedures\p_InsertFactProductPrices.sql" />
+    <Build Include="fact\Tables\ProductPrices.sql" />
+    <Build Include="etl\p_InsertDimTime.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ecp_prd.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="DataLoaderLoginPassword">
+      <DefaultValue>ccpvx'roX%%p&amp;^%Su*lARU</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+</Project>
