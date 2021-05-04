@@ -28,8 +28,8 @@ BEGIN
                 ,           price                       AS [product_price]
                 ,           extractiondate              AS [extraction_date]
                 ,			ROW_NUMBER()
-                                OVER(PARTITION BY   [src] -- file name to ensure no dupes. 
-                                        ,				[id]
+                                OVER(PARTITION BY   	[id]
+										,				[price]
                                         ORDER BY       [extractiondate] DESC
 
                                     )                   AS [BusinessKeySeq]
@@ -48,7 +48,7 @@ BEGIN
                 INNER JOIN dim.product p 
                 ON  p.product_id = dat.product_id 
                 INNER JOIN dim.Calendar c 
-                ON    CAST(dat.extraction_date as date) = c.DisplayDate
+                ON    CAST(dat.extraction_date as date) = c.ActualDate
                 INNER JOIN dim.[Time] t 
                 ON  CAST(dat.extraction_date as time) = t.[Full Time]
                 WHERE BusinessKeySeq = 1

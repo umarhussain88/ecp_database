@@ -102,6 +102,7 @@
     <Build Include="stg_ecp\Stored Procedures\p_InsertFactProductPrices.sql" />
     <Build Include="fact\Tables\ProductPrices.sql" />
     <Build Include="etl\p_InsertDimTime.sql" />
+    <Build Include="Schema\etl_config.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ecp_prd.publish.xml" />

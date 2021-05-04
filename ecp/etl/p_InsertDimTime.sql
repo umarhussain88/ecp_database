@@ -32,7 +32,7 @@ DECLARE
    ,@AmPm        CHAR(2);
 
 INSERT INTO [dim].[Time] (
-    [Time Key]
+    [time_key]
    ,[Hour 24]
    ,[Hour 24 Short]
    ,[Hour 24 Medium]
@@ -124,7 +124,7 @@ WHILE @Hour < 24
                             END;
 
                         INSERT INTO [dim].[Time] (
-                            [Time Key]
+                            [time_key]
                            ,[Hour 24]
                            ,[Hour 24 Short]
                            ,[Hour 24 Medium]
@@ -160,7 +160,7 @@ WHILE @Hour < 24
                            ,[Full Time]
                         )
                         VALUES
-                             ((@Hour * 10000) + (@Minute * 100) + @Second                                                                                                                                                      /* Time Key */
+                             ((@Hour * 10000) + (@Minute * 100) + @Second                                                                                                                                                      /* time_key */
                              ,@Hour                                                                                                                                                                                            /* Hour 24 */
                              ,RIGHT('0' + CONVERT(VARCHAR(2), @Hour), 2)                                                                                                                                                       /* Hour 24 Short */
                              ,RIGHT('0' + CONVERT(VARCHAR(2), @Hour), 2) + ':00'                                                                                                                                               /* Hour 24 Medium */
