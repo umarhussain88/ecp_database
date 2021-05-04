@@ -107,10 +107,4 @@
   <ItemGroup>
     <None Include="ecp_prd.publish.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <SqlCmdVariable Include="DataLoaderLoginPassword">
-      <DefaultValue>ccpvx'roX%%p&amp;^%Su*lARU</DefaultValue>
-      <Value>$(SqlCmdVar__1)</Value>
-    </SqlCmdVariable>
-  </ItemGroup>
 </Project>
