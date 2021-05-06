@@ -1,11 +1,11 @@
-CREATE PROCEDURE [stg_ecp].[p_InsertDwDimProduct]
+﻿CREATE PROCEDURE [stg_ecp].[p_InsertDwDimProduct]
 	@jobKey	int
 AS
 BEGIN
 
 	/* ==================================================================================================================
 	Description:	Update from the stage tables into the DW
-    EXEC stg_ecp.p_InsertDwDimProduct 1
+    EXEC stg_ecp.p_InsertDwDimProduct 2
 	================================================================================================================== */
 
     SET NOCOUNT ON						-- Eliminate any dataset counts
@@ -27,7 +27,11 @@ BEGIN
 				WITH dat AS (SELECT     DISTINCT 
                                 [id]					AS [product_id]
 						,       [name]					AS [product_name]
-                        ,       [list]                  AS [product_listing]
+                        ,       LTRIM(RTRIM(
+                                    REPLACE(
+                                        product_listing,'Category Listing -', '')
+                                    )
+                                        )               AS [product_listing]
                         ,       [category]              AS [product_category]
                         ,       [brand]                 AS [product_brand]
                         ,       [imgsrc]                AS [product_img_src]
@@ -72,9 +76,8 @@ BEGIN
 			
 			WHEN MATCHED AND tgt.[ChangeHash] != src.[ChangeHash] THEN
 				UPDATE
-				SET		
-                        [product_name]              = src.[product_name]    
-                ,       [product_listing]           = src.[product_listing]        
+				SET		    
+                        [product_listing]           = src.[product_listing]        
                 ,       [product_category]          = src.[product_category]        
                 ,       [product_brand]             = src.[product_brand]    
                 ,       [product_img_src]           = src.[product_img_src]  
@@ -98,14 +101,14 @@ BEGIN
 				,		[UpdatedJobKey]
 				)
 				VALUES
-				(		src.[product_id]
-                ,       src.[product_name]
-                ,       src.[product_listing]
-                ,       src.[product_category]
-                ,       src.[product_brand]
-                ,       src.[product_img_src]
+				(		[product_id]
+                ,       [product_name]
+                ,       [product_listing]
+                ,       [product_category]
+                ,       [product_brand]
+                ,       [product_img_src]
 
-                ,		src.[IsActive]
+                ,		[IsActive]
 				,		src.[ChangeHash]
 				,		@jobKey
 				,		@jobKey

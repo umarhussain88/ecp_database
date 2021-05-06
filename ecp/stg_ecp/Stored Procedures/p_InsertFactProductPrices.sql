@@ -1,4 +1,4 @@
-CREATE PROCEDURE [stg_ecp].[p_InsertDwFactProductPrices]
+﻿CREATE PROCEDURE [stg_ecp].[p_InsertDwFactProductPrices]
 	@jobKey	int
 AS
 BEGIN
@@ -40,17 +40,14 @@ BEGIN
 
         , ky AS (SELECT p.[product_key]
                 ,       dat.[product_price] 
-                ,       c.DateKey as [date_key]
-                ,       t.time_key
+                -- ,       c.DateKey as [date_key]
+                -- ,       t.time_key
+                ,       dat.extraction_date
                 ,       dat.[IsActive]
 
                 FROM dat 
                 INNER JOIN dim.product p 
                 ON  p.product_id = dat.product_id 
-                INNER JOIN dim.Calendar c 
-                ON    CAST(dat.extraction_date as date) = c.ActualDate
-                INNER JOIN dim.[Time] t 
-                ON  CAST(dat.extraction_date as time) = t.[Full Time]
                 WHERE BusinessKeySeq = 1
 
 
@@ -58,8 +55,7 @@ BEGIN
         
         , src AS (SELECT ky.[product_key]
                 ,        ky.[product_price]
-                ,        ky.[date_key] 
-                ,        ky.[time_key] 
+                ,        ky.extraction_date
                 ,        ky.[IsActive]
                 ,			ch.[ChangeHash]
 
@@ -75,25 +71,17 @@ BEGIN
 			MERGE	[fact].[ProductPrices] AS tgt
 			USING	src
 			ON		tgt.[product_key] = src.[product_key]
-			AND		tgt.[date_key] = src.[date_key]
-			AND		tgt.[time_key] = src.[time_key]
+			AND		tgt.[product_price] = src.[product_price]
 			
-			WHEN MATCHED AND tgt.[ChangeHash] != src.[ChangeHash] THEN
-				UPDATE
-				SET		
-						[product_price]		= src.[product_price]		
-
-				,		[IsActive]			= src.[IsActive]
-				,		[ChangeHash]		= src.[ChangeHash]
-				,		[UpdatedJobKey]		= @jobKey
 
 			WHEN NOT MATCHED THEN
 				INSERT
 				(		
 						[product_key]	
 				,		[product_price]	
-				,		[date_key] 		
-				,		[time_key] 		
+	
+                ,       [from_datetime]
+                ,       [to_datetime]
 
 				,		[IsActive]
 				,		[ChangeHash]
@@ -103,8 +91,8 @@ BEGIN
 				VALUES
 				(		src.[product_key]	
 				,		src.[product_price]	
-				,		src.[date_key] 		
-				,		src.[time_key] 		
+                ,       GETDATE()
+                ,       NULL  		
 
 				,		src.[IsActive]
 				,		src.[ChangeHash]
@@ -112,9 +100,10 @@ BEGIN
 				,		@jobKey
 				)
 
-			WHEN NOT MATCHED BY SOURCE THEN
+			WHEN NOT MATCHED BY SOURCE AND to_datetime IS NULL THEN
 				UPDATE
 				SET		[IsActive]		= 0
+                ,       [to_datetime]   = src.[extraction_date]
 				,		[ChangeHash]	= CAST('' AS binary(64))
 				,		[UpdatedJobKey]	= @jobKey;
 

@@ -1,16 +1,13 @@
-CREATE TABLE [fact].[ProductPrices] 
-(	[product_key]       bigint          NOT NULL
-,	[product_price]		FLOAT (53)      NOT NULL
-,	[date_key]			INT		NOT NULL
-,   [time_key]          INT        NOT NULL 
+﻿CREATE TABLE [fact].[ProductPrices] (
+    [product_key]   BIGINT        NOT NULL,
+    [product_price] FLOAT (53)    NOT NULL,
+    [from_datetime] DATETIME2 (7) NOT NULL,
+    [to_datetime]   DATETIME2 (7) NULL,
+    [IsActive]      BIT           NOT NULL,
+    [ChangeHash]    BINARY (64)   NOT NULL,
+    [CreatedJobKey] INT           NOT NULL,
+    [UpdatedJobKey] INT           NOT NULL,
+    CONSTRAINT [FK_ProductPrices_product_key] FOREIGN KEY ([product_key]) REFERENCES [dim].[Product] ([product_key])
+);
 
-,	[IsActive]          bit             NOT NULL
-,	[ChangeHash]        binary (64)     NOT NULL
-,	[CreatedJobKey]     int             NOT NULL
-,	[UpdatedJobKey]     int             NOT NULL
 
-,   CONSTRAINT [FK_ProductPrices_product_key] FOREIGN KEY ([product_key]) REFERENCES [dim].[Product] ([product_key])
-,   CONSTRAINT [FK_ProductPrices_date_key]    FOREIGN KEY ([date_key])    REFERENCES [dim].[Calendar] ([DateKey])
-,   CONSTRAINT [FK_ProductPrices_time_key]    FOREIGN KEY ([time_key])    REFERENCES [dim].[Time] ([time_key])
-
-)
