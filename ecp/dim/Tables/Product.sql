@@ -3,7 +3,8 @@ CREATE TABLE [dim].[Product] (
 ,   [product_id]              VARCHAR (50)   NOT NULL
 ,   [product_name]            VARCHAR (255)  NULL
 ,   [product_listing]         VARCHAR (255)  NULL
-,   [product_brand]           VARCHAR (75)   NULL
+,   [product_brand_long]           VARCHAR (75)   NULL
+,   [product_brand_short]           VARCHAR (75)   NULL
 ,   [product_category]        VARCHAR (75)   NULL
 ,   [product_img_src]         VARCHAR (255)  NULL
 

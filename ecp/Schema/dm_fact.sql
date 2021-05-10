@@ -1,3 +1,5 @@
-CREATE SCHEMA [dm_fact]
+﻿CREATE SCHEMA [dm_fact]
     AUTHORIZATION [dbo];
+
+
 

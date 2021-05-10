@@ -73,6 +73,9 @@
     <Folder Include="stg_ecp\Stored Procedures" />
     <Folder Include="fact" />
     <Folder Include="fact\Tables" />
+    <Folder Include="dm_dim" />
+    <Folder Include="dm_fact" />
+    <Folder Include="dm_dim\Views\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schema\dim.sql" />
@@ -103,8 +106,16 @@
     <Build Include="fact\Tables\ProductPrices.sql" />
     <Build Include="etl\p_InsertDimTime.sql" />
     <Build Include="Schema\etl_config.sql" />
+    <Build Include="dm_dim\category.sql" />
+    <Build Include="dm_fact\PriceChanges.sql" />
+    <Build Include="dm_fact\ProductPrices.sql" />
+    <Build Include="Schema\dm_dim.sql" />
+    <Build Include="Schema\dm_fact.sql" />
+    <Build Include="dm_fact\DailyPrices.sql" />
+    <Build Include="dm_dim\Views\LastUpdated.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ecp_prd.publish.xml" />
+    <None Include="SqlSchemaCompare1.scmp" />
   </ItemGroup>
 </Project>

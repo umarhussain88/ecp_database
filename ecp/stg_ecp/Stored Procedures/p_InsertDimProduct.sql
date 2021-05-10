@@ -29,11 +29,14 @@ BEGIN
 						,       [name]					AS [product_name]
                         ,       LTRIM(RTRIM(
                                     REPLACE(
-                                        product_listing,'Category Listing -', '')
+                                        list,'Category Listing -', '')
                                     )
                                         )               AS [product_listing]
                         ,       [category]              AS [product_category]
-                        ,       [brand]                 AS [product_brand]
+                        ,       [brand]                 AS [product_brand_long]
+                        ,       CASE WHEN brand IS NOT NULL 
+                                     THEN b.val 
+                                     ELSE NULL END      AS [product_brand_short]
                         ,       [imgsrc]                AS [product_img_src]
 						,		[extractiondate]		AS [SourceFileExtractDateTime]
 						,       ROW_NUMBER()
@@ -43,7 +46,12 @@ BEGIN
                                         )               AS [BusinessKeySeq]
                         ,		1			            AS [IsActive]
 						FROM	[stg_ecp].[product_data]
-						)
+                        CROSS APPLY (
+                        SELECT UPPER(REPLACE(LEFT(friendlyurl, CHARINDEX('-', friendlyurl) -1 ), '/p/', '')) as val 
+                        WHERE CHARINDEX('-', friendlyurl) >0  
+                                    ) b
+						
+                        )
 
         , src AS ( SELECT 
 
@@ -51,7 +59,8 @@ BEGIN
                         ,   dat.[product_name]
                         ,   dat.[product_listing]
                         ,   dat.[product_category]
-                        ,   dat.[product_brand]
+                        ,   dat.[product_brand_short]
+                        ,   dat.[product_brand_long]
                         ,   dat.[product_img_src]
                         ,   dat.[isActive]
                         ,	ch.[ChangeHash]
@@ -59,7 +68,8 @@ BEGIN
                         CROSS APPLY (SELECT CAST(HASHBYTES	( 'SHA2_512'
                                     , ISNULL(CAST(dat.[product_listing]           AS nvarchar), '')
                                     + ISNULL(CAST(dat.[product_category]          AS nvarchar), '')
-                                    + ISNULL(CAST(dat.[product_brand]             AS nvarchar), '')
+                                    + ISNULL(CAST(dat.[product_brand_short]       AS nvarchar), '')
+                                    + ISNULL(CAST(dat.[product_brand_long]        AS nvarchar), '')
                                     + ISNULL(CAST(dat.[product_img_src]           AS nvarchar), '')
                                     + ISNULL(CAST(dat.[IsActive]                  AS nvarchar), '')
                                                                     ) AS binary(64)
@@ -79,7 +89,8 @@ BEGIN
 				SET		    
                         [product_listing]           = src.[product_listing]        
                 ,       [product_category]          = src.[product_category]        
-                ,       [product_brand]             = src.[product_brand]    
+                ,       [product_brand_short]       = src.[product_brand_short]    
+                ,       [product_brand_long]        = src.[product_brand_long]    
                 ,       [product_img_src]           = src.[product_img_src]  
 
                 ,		[IsActive]						= src.[IsActive]      
@@ -92,7 +103,8 @@ BEGIN
                 ,       [product_name]
                 ,       [product_listing]
                 ,       [product_category]
-                ,       [product_brand]
+                ,       [product_brand_short]
+                ,       [product_brand_long]
                 ,       [product_img_src]
 
                 ,		[IsActive]
@@ -101,12 +113,13 @@ BEGIN
 				,		[UpdatedJobKey]
 				)
 				VALUES
-				(		[product_id]
-                ,       [product_name]
-                ,       [product_listing]
-                ,       [product_category]
-                ,       [product_brand]
-                ,       [product_img_src]
+				(		src.[product_id]
+                ,       src.[product_name]
+                ,       src.[product_listing]
+                ,       src.[product_category]
+                ,       src.[product_brand_short]
+                ,       src.[product_brand_long]
+                ,       src.[product_img_src]
 
                 ,		[IsActive]
 				,		src.[ChangeHash]
