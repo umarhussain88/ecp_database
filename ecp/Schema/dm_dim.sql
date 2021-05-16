@@ -5,3 +5,10 @@
 
 
 
+
+
+
+GO
+GRANT SELECT
+    ON SCHEMA::[dm_dim] TO [DataViewer];
+

@@ -10,6 +10,11 @@ WITH cte_current_price AS (
 
 
 SELECT p.product_key
+, ROW_NUMBER() OVER(
+    PARTITION BY pc.[Change Status]
+    ORDER BY  pch.[Most Recent Change Date] DESC 
+            , p.product_key DESC 
+)                                                   AS  [RankOrder]
 ,      p.product_id
 ,      p.product_name                                AS [Product Name]
 ,      p.product_listing                             AS [Product Listing]
@@ -38,11 +43,6 @@ SELECT p.product_key
 ,      cp.product_price                              AS [Active Price]
 ,      cp.from_datetime                              AS [Current Known Date]
 
-, ROW_NUMBER() OVER(
-    PARTITION BY pc.[Change Status]
-    ORDER BY  pch.[Most Recent Change Date] DESC 
-            , p.product_key DESC 
-) RankOrder
 
 
 FROM dim.Product p 

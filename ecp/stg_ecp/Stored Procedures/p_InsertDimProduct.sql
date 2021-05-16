@@ -38,6 +38,7 @@ BEGIN
                                      THEN b.val 
                                      ELSE NULL END      AS [product_brand_short]
                         ,       [imgsrc]                AS [product_img_src]
+                        ,       [friendlyurl]           AS [product_url]
 						,		[extractiondate]		AS [SourceFileExtractDateTime]
 						,       ROW_NUMBER()
 									OVER(PARTITION BY   [id]
@@ -62,6 +63,7 @@ BEGIN
                         ,   dat.[product_brand_short]
                         ,   dat.[product_brand_long]
                         ,   dat.[product_img_src]
+                        ,   dat.[product_url]
                         ,   dat.[isActive]
                         ,	ch.[ChangeHash]
                         FROM dat 
@@ -71,6 +73,7 @@ BEGIN
                                     + ISNULL(CAST(dat.[product_brand_short]       AS nvarchar), '')
                                     + ISNULL(CAST(dat.[product_brand_long]        AS nvarchar), '')
                                     + ISNULL(CAST(dat.[product_img_src]           AS nvarchar), '')
+                                    + ISNULL(CAST(dat.[product_url]               AS nvarchar), '')
                                     + ISNULL(CAST(dat.[IsActive]                  AS nvarchar), '')
                                                                     ) AS binary(64)
                                                         ) AS [ChangeHash]
@@ -92,6 +95,7 @@ BEGIN
                 ,       [product_brand_short]       = src.[product_brand_short]    
                 ,       [product_brand_long]        = src.[product_brand_long]    
                 ,       [product_img_src]           = src.[product_img_src]  
+                ,       [product_url]               = src.[product_url]  
 
                 ,		[IsActive]						= src.[IsActive]      
 				,		[ChangeHash]					= src.[ChangeHash]
@@ -106,6 +110,7 @@ BEGIN
                 ,       [product_brand_short]
                 ,       [product_brand_long]
                 ,       [product_img_src]
+                ,       [product_url]
 
                 ,		[IsActive]
 				,		[ChangeHash]
@@ -120,6 +125,7 @@ BEGIN
                 ,       src.[product_brand_short]
                 ,       src.[product_brand_long]
                 ,       src.[product_img_src]
+                ,       src.[product_url]
 
                 ,		[IsActive]
 				,		src.[ChangeHash]
