@@ -106,13 +106,20 @@
     <Build Include="fact\Tables\ProductPrices.sql" />
     <Build Include="etl\p_InsertDimTime.sql" />
     <Build Include="Schema\etl_config.sql" />
-    <Build Include="dm_dim\category.sql" />
     <Build Include="dm_fact\PriceChanges.sql" />
-    <Build Include="dm_fact\ProductPrices.sql" />
     <Build Include="Schema\dm_dim.sql" />
     <Build Include="Schema\dm_fact.sql" />
     <Build Include="dm_fact\DailyPrices.sql" />
     <Build Include="dm_dim\Views\LastUpdated.sql" />
+    <Build Include="dm_dim\Views\category.sql" />
+    <Build Include="dm_dim\Views\ProductStatus.sql" />
+    <Build Include="dm_dim\Views\Product.sql" />
+    <Build Include="dm_dim\Views\PriceChangeHistory.sql" />
+    <Build Include="dm_dim\Views\Calendar.sql" />
+    <Build Include="etl_audit\Stored Procedures\p_InsertJob.sql" />
+    <Build Include="etl_audit\Stored Procedures\p_UpdateJob.sql" />
+    <Build Include="etl_audit\Tables\Job.sql" />
+    <Build Include="Security\DataViewer.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ecp_prd.publish.xml" />

@@ -35,14 +35,12 @@ BEGIN
 			(		[JobStatus]		
 			,		[IsRunning]
 			,		[DatasetName]	
-			,		[DataPipelineIdentifier]
 			,		[ActivityName]
 			,		[StartDateTime]
 			)
 			SELECT	'Running'
 			,		1
 			,		@DatasetName
-			,		@DataPipelineIdentifier
 			,		@ActivityName
 			,		GETDATE();
 
@@ -57,8 +55,7 @@ BEGIN
 
 			DELETE 
 			FROM	[etl_audit].[JobLog]
-			WHERE	DATEDIFF(DAY, [EndTime], GETDATE()) >  (SELECT	[JobLogRetentionDays]
-															FROM	[etl_config].[Configuration]	)
+			WHERE	DATEDIFF(DAY, [EndTime], GETDATE()) >  (SELECT	60 AS [JobLogRetentionDays])
 
     END TRY
 

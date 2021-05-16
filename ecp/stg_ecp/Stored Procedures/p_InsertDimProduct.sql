@@ -138,12 +138,15 @@ BEGIN
     BEGIN CATCH
 
 		-- Log the error and raise it again
+        
 		EXEC [etl_audit].[p_LogAndRaiseSqlError] @jobLogKey = @jobLogKey;
+        EXEC [etl_audit].[p_UpdateJob] @jobKey = @JobKey, @JobStatus = 'Failure'
 
     END CATCH
 
     -- Log the end of the Procedure Run, success or otherwise    
     EXEC [etl_audit].[p_UpdateJobLog_EndProcedure] @jobLogKey = @jobLogKey;
+    EXEC [etl_audit].[p_UpdateJob] @jobKey = @JobKey, @JobStatus = 'Success'
 
 END
 

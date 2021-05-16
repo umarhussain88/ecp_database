@@ -1,3 +1,5 @@
-CREATE SCHEMA [etl_audit]
+﻿CREATE SCHEMA [etl_audit]
     AUTHORIZATION [dbo];
+
+
 
